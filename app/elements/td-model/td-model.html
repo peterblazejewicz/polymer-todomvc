@@ -8,7 +8,32 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<!-- Add your elements here -->
-<link rel="stylesheet" href="../bower_components/todomvc-common/base.css">
-<link rel="stylesheet" href="../bower_components/todomvc-app-css/index.css">
-<link rel="import" href="td-model/td-model.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="td-model">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div>Hello from <span>{{foo}}</span></div>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'td-model',
+
+      properties: {
+        foo: {
+          type: String,
+          value: 'td-model',
+          notify: true
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>
