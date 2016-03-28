@@ -9,15 +9,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 
 <dom-module id="td-model">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <div>Hello from <span>{{foo}}</span></div>
+  <template strip-whitespace>
   </template>
   <script>
   (function() {
@@ -25,12 +20,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
       is: 'td-model',
-
+      hostAttributes: {
+        hidden: true
+      },
       properties: {
-        foo: {
-          type: String,
-          value: 'td-model',
+        items: {
+          type: Array,
           notify: true
+        },
+        filter: {
+          type: String
         }
       }
     });

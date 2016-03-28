@@ -44,8 +44,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <body unresolved>
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
+    <div id="todoapp">
+			<header>
+				<h1>todos</h1>
+			</header>
+			<template is="dom-bind">
+				<td-model id="model" items="{{todos}}"></td-model>
+				<td-todos model-id="model" items="{{todos}}"></td-todos>
+			</template>
+		</div>
+		<footer id="info">
+			<p>Double-click to edit a todo</p>
+			<p>Created by <a href="https://www.polymer-project.org/1.0/">The Polymer Authors</a></p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
   </template>
   <!-- build:js scripts/app.js -->
+  <script src="bower_components/todomvc-common/base.js" async></script>
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
 </body>
