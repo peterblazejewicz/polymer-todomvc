@@ -1,3 +1,7 @@
+/**
+ * Tests are written in ES6
+ */
+
 suite('td-model tests',  () => {
   'use strict';
 
