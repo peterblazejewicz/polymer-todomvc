@@ -14,7 +14,7 @@ var ret = {
   'plugins': {
     'local': {
       'browsers': [
-        'safari'
+        'chrome'
       ]
     }
   },

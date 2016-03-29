@@ -18,31 +18,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="../elements/td-model/td-model.html">
 </head>
 <body>
-  <test-fixture id="basic">
+  <test-fixture id="model">
     <template>
-      <td-model items="[]"></td-model>
+      <td-model></td-model>
     </template>
   </test-fixture>
 
-  <script>
-
-    suite('td-model tests', function() {
-      var tdModel;
-
-      setup(function() {
-        tdModel = fixture('basic');
-      });
-
-      test('has items', function() {
-        assert.isOk(tdModel.items, 'There is items property');
-      });
-
-      test('is hidden', function() {
-        assert.isTrue(tdModel.hidden, 'The element is hidden');
-      })
-
-    });
-  </script>
+  <script src="td-model.js"></script>
 
 </body>
 </html>

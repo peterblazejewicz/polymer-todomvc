@@ -13,6 +13,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="td-model">
   <template strip-whitespace>
+    <iron-localstorage  name="todos-polymer"
+      value="{{items}}"
+      on-iron-localstorage-load-empty="_initializeDefaultTodos">
+    </iron-localstorage>
   </template>
   <script>
   (function() {
@@ -31,6 +35,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         filter: {
           type: String
         }
+      },
+      _initializeDefaultTodos: function() {
+        this.items = [];
       }
     });
   })();
