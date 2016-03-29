@@ -10,7 +10,8 @@
     "polymer": "Polymer/polymer#^1.2.0",
     "todomvc-common": "^1.0.2",
     "todomvc-app-css": "^2.0.4",
-    "iron-localstorage": "^1.0.5"
+    "iron-localstorage": "^1.0.5",
+    "web-component-tester": "Polymer/web-component-tester#^4.2.2"
   },
   "devDependencies": {},
   "ignore": []
