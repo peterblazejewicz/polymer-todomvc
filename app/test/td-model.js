@@ -46,4 +46,10 @@ suite('td-model tests', () => {
     tdModel.addEventListener('items-changed', listener);
     tdModel.newItem('new item');
   });
+
+  test('It destroys item', () => {
+    assert(false, 'TBD');
+  });
+
+
 });

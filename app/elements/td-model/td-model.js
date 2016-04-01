@@ -21,6 +21,12 @@
         completed: false
       });
     },
+    destroyItem: function(item) {
+      var i = this.items.indexOf(item);
+      if (i > -1) {
+        this.splice('items', i, 1);
+      }
+    },
     // private api
     _initializeDefaultTodos: function () {
       this.items = [];
