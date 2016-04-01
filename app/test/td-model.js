@@ -11,6 +11,13 @@ suite('td-model tests', () => {
   setup(() => {
     tdModel = fixture('model');
     ls = tdModel.$$('iron-localstorage');
+    ls.save();
+    ls.reload();
+  });
+
+  teardown(() => {
+    ls.value = null;
+    ls.save();
   });
 
   test('Has hidden attribute', () => {
@@ -21,14 +28,8 @@ suite('td-model tests', () => {
     assert.isNotNull(ls, 'There is a local storage component');
   });
 
-  test('Has items', (done) => {
-    // when loaded it creates default item array
-    ls.addEventListener('iron-localstorage-load-empty', () => {
-      assert.isOk(tdModel.items, 'Has items');
-      done();
-    });
-    ls.save();
-    ls.reload();
+  test('Has items property', () => {
+    assert.isOk(tdModel.items, 'Hasss items');
   });
 
 });
