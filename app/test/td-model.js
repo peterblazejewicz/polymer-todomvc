@@ -32,4 +32,18 @@ suite('td-model tests', () => {
     assert.isOk(tdModel.items, 'Hasss items');
   });
 
+  test('It adds new item', () => {
+    let length = tdModel.items.length;
+    tdModel.newItem('new item');
+    assert.lengthOf(tdModel.items, ++length, 'The item should be added');
+  });
+
+  test('It broadcasts event when new item is added', (done) => {
+    let listener = (event) => {
+      tdModel.removeEventListener('items-changed', listener);
+      done();
+    };
+    tdModel.addEventListener('items-changed', listener);
+    tdModel.newItem('new item');
+  });
 });
