@@ -10,9 +10,6 @@
       items: {
         type: Array,
         notify: true
-      },
-      filter: {
-        type: String
       }
     },
     _initializeDefaultTodos: function () {
