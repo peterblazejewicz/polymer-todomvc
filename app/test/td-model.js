@@ -6,13 +6,15 @@ suite('td-model tests', () => {
   'use strict';
 
   let tdModel,
-    ls;
+    ls,
+    itemsChangedSpy;
 
   setup(() => {
     tdModel = fixture('model');
     ls = tdModel.$$('iron-localstorage');
     ls.save();
     ls.reload();
+    itemsChangedSpy = sinon.spy();
   });
 
   teardown(() => {
@@ -38,13 +40,11 @@ suite('td-model tests', () => {
     assert.lengthOf(tdModel.items, ++length, 'The item should be added');
   });
 
-  test('It broadcasts event when new item is added', (done) => {
-    let listener = (event) => {
-      tdModel.removeEventListener('items-changed', listener);
-      done();
-    };
-    tdModel.addEventListener('items-changed', listener);
+  test('It broadcasts event when new item is added', () => {
+    itemsChangedSpy.reset();
+    tdModel.addEventListener('items-changed', itemsChangedSpy);
     tdModel.newItem('new item');
+    assert.isTrue(itemsChangedSpy.called);
   });
 
   test('It destroys item', () => {
