@@ -69,8 +69,44 @@ suite('td-model tests', () => {
     assert.isTrue(itemsChangedSpy.called);
   });
 
-  test('It has filters property', () => {
-    assert.isOk(tdModel.filters);
+  /**
+   * Filters prooperty suite
+   */
+  suite('Filters property', () => {
+    let todoItem;
+    setup(() => {
+      tdModel.newItem('new item');
+      todoItem = tdModel.items[tdModel.items.length - 1];
+    });
+
+    teardown(() => {
+      tdModel.destroyItem(todoItem);
+    });
+
+    test('It has filters property', () => {
+      assert.isOk(tdModel.filters);
+    });
+
+    test('It has filter for active items', () => {
+      assert.isOk(tdModel.filters.active);
+    });
+
+    test('It has filter for completed items', () => {
+      assert.isOk(tdModel.filters.completed);
+    });
+
+    test('The active filter returns expected results', () => {
+      assert.isTrue(tdModel.filters.active(todoItem));
+      todoItem.completed = true;
+      assert.isFalse(tdModel.filters.active(todoItem));
+    });
+
+    test('The completed filter returns expected retusults', () => {
+      assert.isFalse(tdModel.filters.completed(todoItem));
+      todoItem.completed = true;
+      assert.isTrue(tdModel.filters.completed(todoItem));
+    });
+
   });
 
 });
