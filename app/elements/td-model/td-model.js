@@ -12,6 +12,14 @@
         notify: true
       }
     },
+    filters: {
+      active: function(item) {
+        return !item.completed;
+      },
+      completed: function (item) {
+        return item.completed;
+      }
+    },
     // public api
     newItem: function(title) {
       title = String(title).trim();

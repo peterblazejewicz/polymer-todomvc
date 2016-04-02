@@ -69,4 +69,8 @@ suite('td-model tests', () => {
     assert.isTrue(itemsChangedSpy.called);
   });
 
+  test('It has filters property', () => {
+    assert.isOk(tdModel.filters);
+  });
+
 });
