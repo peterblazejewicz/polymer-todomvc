@@ -48,8 +48,25 @@ suite('td-model tests', () => {
   });
 
   test('It destroys item', () => {
-    assert(false, 'TBD');
+    tdModel.newItem('new item');
+    let length = tdModel.items.length;
+    assert.lengthOf(tdModel.items, 1, 'The item should be added');
+    let item = tdModel.items[0];
+    assert.isNotNull(item);
+    itemsChangedSpy.reset();
+    tdModel.addEventListener('items-changed', itemsChangedSpy);
+    tdModel.destroyItem(item);
+    assert.isTrue(itemsChangedSpy.called);
+    assert.lengthOf(tdModel.items, 0, 'The item should be removed');
   });
 
+  test('It broadcasts event when item is removed', () => {
+    tdModel.newItem('new item');
+    let item = tdModel.items[0];
+    itemsChangedSpy.reset();
+    tdModel.addEventListener('items-changed', itemsChangedSpy);
+    tdModel.destroyItem(item);
+    assert.isTrue(itemsChangedSpy.called);
+  });
 
 });
