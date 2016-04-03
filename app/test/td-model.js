@@ -126,4 +126,40 @@ suite('td-model', () => {
 
   });
 
+  suite('destroyItem', () => {
+    let item;
+    setup((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      tdModel.newItem('new item');
+      assert.lengthOf(tdModel.items, 1, 'Length is reset');
+      item = tdModel.items[0];
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      item = null;
+      done();
+    });
+
+    test('destroys item', () => {
+      tdModel.destroyItem(item);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+    });
+
+    test('dispatches event', () => {
+      let changespy = sinon.spy();
+      tdModel.addEventListener('items-changed', changespy);
+      assert.isFalse(changespy.called);
+      tdModel.destroyItem(item);
+      assert.isTrue(changespy.called);
+      tdModel.removeEventListener('items-changed', changespy);
+    });
+
+  });
+
 });
