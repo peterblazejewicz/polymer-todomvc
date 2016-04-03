@@ -2,109 +2,125 @@
  * Tests are written in ES6
  */
 
-suite('td-model tests', () => {
-  'use strict';
+suite('td-model', () => {
 
-  let tdModel,
-    ls,
-    itemsChangedSpy;
+  let tdModel;
 
-  setup(() => {
-    tdModel = fixture('model');
-    ls = tdModel.$$('iron-localstorage');
-    ls.save();
+  suiteSetup(() => {
+    tdModel = fixture('td-model');
+    let ls = tdModel.$$('iron-localstorage');
     ls.reload();
-    itemsChangedSpy = sinon.spy();
-  });
-
-  teardown(() => {
-    ls.value = null;
-    ls.save();
-  });
-
-  test('Has hidden attribute', () => {
-    assert.isTrue(tdModel.hidden, 'The element is hidden');
-  });
-
-  test('Test child iron-localstorage', () => {
-    assert.isNotNull(ls, 'There is a local storage component');
-  });
-
-  test('Has items property', () => {
-    assert.isOk(tdModel.items, 'Hasss items');
-  });
-
-  test('It adds new item', () => {
-    let length = tdModel.items.length;
-    tdModel.newItem('new item');
-    assert.lengthOf(tdModel.items, ++length, 'The item should be added');
-  });
-
-  test('It broadcasts event when new item is added', () => {
-    itemsChangedSpy.reset();
-    tdModel.addEventListener('items-changed', itemsChangedSpy);
-    tdModel.newItem('new item');
-    assert.isTrue(itemsChangedSpy.called);
-  });
-
-  test('It destroys item', () => {
-    tdModel.newItem('new item');
-    let length = tdModel.items.length;
-    assert.lengthOf(tdModel.items, 1, 'The item should be added');
-    let item = tdModel.items[0];
-    assert.isNotNull(item);
-    itemsChangedSpy.reset();
-    tdModel.addEventListener('items-changed', itemsChangedSpy);
-    tdModel.destroyItem(item);
-    assert.isTrue(itemsChangedSpy.called);
-    assert.lengthOf(tdModel.items, 0, 'The item should be removed');
-  });
-
-  test('It broadcasts event when item is removed', () => {
-    tdModel.newItem('new item');
-    let item = tdModel.items[0];
-    itemsChangedSpy.reset();
-    tdModel.addEventListener('items-changed', itemsChangedSpy);
-    tdModel.destroyItem(item);
-    assert.isTrue(itemsChangedSpy.called);
+    assert.isNotNull(tdModel);
   });
 
   /**
-   * Filters prooperty suite
+   * Some common td-model properties
    */
-  suite('Filters property', () => {
-    let todoItem;
-    setup(() => {
+  suite('common properties', () => {
+    test('hidden', () => {
+      assert.isOk(tdModel.hidden, 'has hidden property');
+    });
+
+    test('iron-localstorage', () => {
+      assert.isOk(tdModel.$$('iron-localstorage'), 'the iron-localstore is present');
+    });
+
+    test('items', () => {
+      let ls = tdModel.$$('iron-localstorage');
+      ls.reload();
+      assert.isDefined(tdModel.items, 'Items is defined  property');
+    });
+
+  });
+
+  /**
+   * Adding new item tests
+   */
+  suite('newItem', () => {
+    setup((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    test('It adds one item', () => {
       tdModel.newItem('new item');
-      todoItem = tdModel.items[tdModel.items.length - 1];
+      assert.lengthOf(tdModel.items, 1, 'Item was added');
     });
 
-    teardown(() => {
-      tdModel.destroyItem(todoItem);
+    test('it broadcast change', () => {
+      let changespy = sinon.spy();
+      tdModel.addEventListener('items-changed', changespy);
+      assert.isFalse(changespy.called);
+      tdModel.newItem('new item');
+      assert.isTrue(changespy.called);
     });
 
-    test('It has filters property', () => {
-      assert.isOk(tdModel.filters);
+    test('it creates correct new item', () => {
+      let title = 'the new item title';
+      tdModel.newItem(title);
+      let item = tdModel.items[tdModel.items.length - 1];
+      assert.isNotNull(item, 'the item is created');
+      assert.isOk(item.title, 'the property title is present');
+      assert.equal(item.title, title, 'the title is correct');
+      assert.isFalse(item.completed, 'the item state is correct');
     });
 
-    test('It has filter for active items', () => {
-      assert.isOk(tdModel.filters.active);
+  });
+
+
+  /**
+   * Fitlers tests
+   */
+  suite('filters', () => {
+    let newItem;
+    setup((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      tdModel.newItem('new item');
+      newItem = tdModel.items[tdModel.items.length - 1];
+      done();
     });
 
-    test('It has filter for completed items', () => {
-      assert.isOk(tdModel.filters.completed);
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      newItem = null;
+      done();
     });
 
-    test('The active filter returns expected results', () => {
-      assert.isTrue(tdModel.filters.active(todoItem));
-      todoItem.completed = true;
-      assert.isFalse(tdModel.filters.active(todoItem));
+    test('filters property', () => {
+      assert.isDefined(tdModel.filters, 'property is defined');
     });
 
-    test('The completed filter returns expected retusults', () => {
-      assert.isFalse(tdModel.filters.completed(todoItem));
-      todoItem.completed = true;
-      assert.isTrue(tdModel.filters.completed(todoItem));
+    test('filters.active', () => {
+      assert.isDefined(tdModel.filters.active, 'active method exists');
+    });
+
+    test('filters.active results', () => {
+      assert.isTrue(tdModel.filters.active(newItem), 'returns true when item is created');
+      newItem.completed = true;
+      assert.isFalse(tdModel.filters.active(newItem), 'returns false when item is completed');
+    });
+
+    test('filters.completed', () => {
+      assert.isDefined(tdModel.filters.completed, 'completed methods exists');
+    });
+
+    test('filters.completed results', () => {
+      assert.isFalse(tdModel.filters.completed(newItem), 'returns false when item is created');
+      newItem.completed = true;
+      assert.isTrue(tdModel.filters.completed(newItem), 'returns true when when item is completed');
     });
 
   });
