@@ -8,26 +8,41 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<html>
 
+<html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <title>Elements Test Runner</title>
-  <meta charset="UTF-8">
-  <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <title>td-input</title>
+
+  <script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <script src="../bower_components/web-component-tester/browser.js"></script>
 
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../elements/td-input/td-input.html">
+
 </head>
-
 <body>
-  <script>
-    WCT.loadSuites([
-      'td-model-basic.html',
-      'td-model-basic.html?dom=shadow',
-      'td-input-basic.html',
-      'td-input-basic.html?dom=shadow'
-    ]);
-  </script>
-</body>
 
+<test-fixture id="basic">
+  <template>
+    <td-input></td-input>
+  </template>
+</test-fixture>
+
+<script>
+  suite('td-input tests', function() {
+    var element;
+
+    setup(function() {
+      element = fixture('basic');
+    });
+
+    test('', function() {
+
+    });
+
+  });
+</script>
+
+</body>
 </html>
