@@ -13,7 +13,7 @@
       }
     },
     filters: {
-      active: function(item) {
+      active: function (item) {
         return !item.completed;
       },
       completed: function (item) {
@@ -21,24 +21,24 @@
       }
     },
     // public api
-    clearCompletedItems: function() {
+    clearCompletedItems: function () {
       this.items = this.items.filter(this.filters.active);
     },
-    getActiveCount: function() {
+    getActiveCount: function () {
       return (this.items) ? this.items.filter(this.filters.active).length : 0;
     },
-    getCompletedCount: function() {
+    getCompletedCount: function () {
       return (this.items) ? this.items.filter(this.filters.completed).length : 0;
     },
-    newItem: function(title) {
+    newItem: function (title) {
       title = String(title).trim();
-      if(!title) return;
+      if (!title) return;
       this.push('items', {
         title: title,
         completed: false
       });
     },
-    destroyItem: function(item) {
+    destroyItem: function (item) {
       var i = this.items.indexOf(item);
       if (i > -1) {
         this.splice('items', i, 1);
