@@ -21,6 +21,9 @@
       }
     },
     // public api
+    clearCompletedItems: function() {
+      this.items = this.items.filter(this.filters.active);
+    },
     getActiveCount: function() {
       return (this.items) ? this.items.filter(this.filters.active).length : 0;
     },

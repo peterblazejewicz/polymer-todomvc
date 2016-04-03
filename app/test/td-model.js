@@ -243,4 +243,40 @@ suite('td-model', () => {
     });
 
   });
+
+  suite('clearCompletedItems', () => {
+    setup((done) => {
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    test('clearCompletedItems method', () => {
+      assert.isOk(tdModel.clearCompletedItems, 'the method is defined');
+    });
+
+    test('clears all completed items', () => {
+      tdModel.newItem('new item');
+      tdModel.newItem('new item');
+      let item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      tdModel.newItem('new item');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      assert.lengthOf(tdModel.items, 3, 'there are 3 items');
+      assert.equal(tdModel.getActiveCount(), 1, 'there is 1 active item');
+      assert.equal(tdModel.getCompletedCount(), 2, 'there are 2 completed item');
+      tdModel.clearCompletedItems();
+      assert.lengthOf(tdModel.items, 1, 'there is only one item now');
+      assert.equal(tdModel.getActiveCount(), 1, 'there is only one active item');
+      assert.equal(tdModel.getCompletedCount(), 0, 'all completed items are removed');
+    });
+  });
 });
