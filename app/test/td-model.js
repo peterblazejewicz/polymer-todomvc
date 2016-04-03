@@ -201,4 +201,46 @@ suite('td-model', () => {
       assert.equal(tdModel.getCompletedCount(), 2, 'when tasks are created there are no complete tasks');
     });
   });
+
+  suite('getActiveCount', () => {
+    setup((done) => {
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    test('getActiveCount method', () => {
+      assert.isOk(tdModel.getActiveCount, 'the method is defined');
+    });
+
+    test('no active by default', () => {
+      assert.equal(tdModel.getActiveCount(), 0, 'by default there are no active tasks');
+    });
+
+    test('all active when adding new items', () => {
+      tdModel.newItem('new item');
+      tdModel.newItem('another new item');
+      assert.equal(tdModel.getActiveCount(), 2, 'when tasks are created all are active tasks');
+    });
+
+    test('correct count of active', () => {
+      tdModel.newItem('new item');
+      tdModel.newItem('new item');
+      assert.equal(tdModel.getActiveCount(), 2, 'all task are active by default');
+      let item = tdModel.items[0];
+      item.completed = true;
+      assert.equal(tdModel.getActiveCount(), 1, 'only one task should be active now');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      assert.equal(tdModel.getActiveCount(), 0, 'all task should be complete now and no active');
+    });
+
+  });
 });
