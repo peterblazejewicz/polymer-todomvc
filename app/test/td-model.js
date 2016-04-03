@@ -62,6 +62,7 @@ suite('td-model', () => {
       assert.isFalse(changespy.called);
       tdModel.newItem('new item');
       assert.isTrue(changespy.called);
+      tdModel.removeEventListener('items-changed', changespy);
     });
 
     test('it creates correct new item', () => {
