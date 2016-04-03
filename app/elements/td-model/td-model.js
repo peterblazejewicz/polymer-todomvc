@@ -21,6 +21,9 @@
       }
     },
     // public api
+    getCompletedCount: function() {
+      return (this.items) ? this.items.filter(this.filters.completed).length : 0;
+    },
     newItem: function(title) {
       title = String(title).trim();
       if(!title) return;

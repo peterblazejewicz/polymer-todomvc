@@ -162,4 +162,43 @@ suite('td-model', () => {
 
   });
 
+  suite('getCompletedCount', () => {
+    setup((done) => {
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    test('getCompletedCount method', () => {
+      assert.isOk(tdModel.getCompletedCount, 'the method is defined');
+    });
+
+    test('no completed by default', () => {
+      assert.equal(tdModel.getCompletedCount(), 0, 'by default there are no complete tasks');
+    });
+
+    test('no completed when adding new items', () => {
+      tdModel.newItem('new item');
+      tdModel.newItem('another new item');
+      assert.equal(tdModel.getCompletedCount(), 0, 'when tasks are created there are no complete tasks');
+    });
+
+    test('correct count of completed', () => {
+      tdModel.newItem('new item');
+      let item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      assert.equal(tdModel.getCompletedCount(), 1, 'when tasks are created there are no complete tasks');
+      tdModel.newItem('another new item');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      assert.equal(tdModel.getCompletedCount(), 2, 'when tasks are created there are no complete tasks');
+    });
+  });
 });
