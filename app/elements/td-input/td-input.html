@@ -1,17 +1,34 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <dom-module id="td-input">
-  <template></template>
   <script>
     (function() {
       'use strict';
 
+      var ENTER_KEY_CODE = 13,
+          ESC_KEY_CODE = 27;
+
       Polymer({
+
         is: 'td-input',
 
         extends: 'input',
 
         listeners: {
+          'keyup': '_keyupAction',
+          'keypress': '_keypressAction'
+        },
+
+        // private api
+        _keypressAction: function(e, detail, sender) {
+          if (e.keyCode === ENTER_KEY_CODE) {
+            this.fire('td-input-commit');
+          }
+        },
+        _keyupAction: function(e, detail, sender) {
+          if (e.keyCode === ESC_KEY_CODE) {
+            this.fire('td-input-cancel');
+          }
         }
 
       });
