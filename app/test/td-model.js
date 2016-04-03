@@ -279,4 +279,52 @@ suite('td-model', () => {
       assert.equal(tdModel.getCompletedCount(), 0, 'all completed items are removed');
     });
   });
+
+  suite('setItemsCompleted', () => {
+    setup((done) => {
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    teardown((done) => {
+      assert.isDefined(tdModel.items);
+      tdModel.splice('items', 0);
+      assert.lengthOf(tdModel.items, 0, 'Length is reset');
+      done();
+    });
+
+    test('setItemsCompleted method', () => {
+      assert.isOk(tdModel.setItemsCompleted, 'the method is defined');
+    });
+
+    test('sets all items completed', () => {
+      tdModel.newItem('new item');
+      tdModel.newItem('new item');
+      tdModel.newItem('new item');
+      assert.equal(tdModel.getActiveCount(), 3, 'all are active');
+      tdModel.setItemsCompleted(true);
+      assert.equal(tdModel.getActiveCount(), 0, 'no active items now');
+      assert.equal(tdModel.getCompletedCount(), 3, 'all are completed');
+    });
+
+    test('sets all items active', () => {
+      let item;
+      tdModel.newItem('new item');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      tdModel.newItem('new item');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      tdModel.newItem('new item');
+      item = tdModel.items[tdModel.items.length - 1];
+      item.completed = true;
+      assert.equal(tdModel.getActiveCount(), 0, 'all are completed');
+      assert.equal(tdModel.getCompletedCount(), 3, 'all are completed');
+      tdModel.setItemsCompleted(false);
+      assert.equal(tdModel.getActiveCount(), 3, 'all are active');
+      assert.equal(tdModel.getCompletedCount(), 0, 'all are not completed');
+    });
+
+  });
 });

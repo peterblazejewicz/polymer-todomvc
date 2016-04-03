@@ -44,6 +44,15 @@
         this.splice('items', i, 1);
       }
     },
+    matchesFilter: function (item, filter) {
+      var fn = this.filters[filter];
+      return fn ? fn(item) : true;
+    },
+    setItemsCompleted: function (completed) {
+      for (var i = 0; i < this.items.length; ++i) {
+        this.set(['items', i, 'completed'], completed);
+      }
+    },
     // private api
     _initializeDefaultTodos: function () {
       this.items = [];
