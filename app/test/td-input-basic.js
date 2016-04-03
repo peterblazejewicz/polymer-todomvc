@@ -1,13 +1,13 @@
 suite('td-input tests', () => {
 
-  let element;
+  let input;
 
   setup(() => {
-    element = fixture('basic');
+    input = fixture('basic');
   });
 
   test('uses input', () => {
-    assert.equal(element.tagName.toLowerCase(), 'input');
+    assert.equal(input.tagName.toLowerCase(), 'input');
   });
 
 });
